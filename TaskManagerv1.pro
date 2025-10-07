@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    processtablemodel.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    processtablemodel.h
 
 FORMS += \
     mainwindow.ui
