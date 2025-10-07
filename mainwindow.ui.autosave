@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuRendimiento">
+    <property name="title">
+     <string>Rendimiento</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHistorial_de_aplicaciones">
+    <property name="title">
+     <string>Historial de aplicaciones</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuInicio">
+    <property name="title">
+     <string>Inicio</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuUsuarios">
+    <property name="title">
+     <string>Usuarios</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuDetalles">
+    <property name="title">
+     <string>Detalles</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuServicios">
+    <property name="title">
+     <string>Servicios</string>
+    </property>
+   </widget>
+   <addaction name="menuRendimiento"/>
+   <addaction name="menuHistorial_de_aplicaciones"/>
+   <addaction name="menuInicio"/>
+   <addaction name="menuUsuarios"/>
+   <addaction name="menuDetalles"/>
+   <addaction name="menuServicios"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
