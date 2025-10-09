@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "procesoswindow.h" // ¡Incluir!
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,5 +25,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    int m_procesosIndex = 0; // Añade esta variable de miembro
+
 };
 #endif // MAINWINDOW_H

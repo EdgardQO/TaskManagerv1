@@ -27,10 +27,15 @@ class Ui_MainWindow
 public:
     QAction *actionRendimiento;
     QAction *actionProcesos;
+    QAction *actionHistorial_de_aplicaciones;
+    QAction *actionInicio;
+    QAction *actionUsuario;
+    QAction *actionDetalles;
+    QAction *actionServicios;
     QWidget *centralwidget;
     QStackedWidget *stackedWidgetPrincipal;
     QWidget *page;
-    QLabel *label;
+    QWidget *widget;
     QWidget *page_2;
     QLabel *label_2;
     QMenuBar *menubar;
@@ -48,22 +53,37 @@ public:
         actionProcesos = new QAction(MainWindow);
         actionProcesos->setObjectName("actionProcesos");
         actionProcesos->setMenuRole(QAction::MenuRole::NoRole);
+        actionHistorial_de_aplicaciones = new QAction(MainWindow);
+        actionHistorial_de_aplicaciones->setObjectName("actionHistorial_de_aplicaciones");
+        actionHistorial_de_aplicaciones->setMenuRole(QAction::MenuRole::NoRole);
+        actionInicio = new QAction(MainWindow);
+        actionInicio->setObjectName("actionInicio");
+        actionInicio->setMenuRole(QAction::MenuRole::NoRole);
+        actionUsuario = new QAction(MainWindow);
+        actionUsuario->setObjectName("actionUsuario");
+        actionUsuario->setMenuRole(QAction::MenuRole::NoRole);
+        actionDetalles = new QAction(MainWindow);
+        actionDetalles->setObjectName("actionDetalles");
+        actionDetalles->setMenuRole(QAction::MenuRole::NoRole);
+        actionServicios = new QAction(MainWindow);
+        actionServicios->setObjectName("actionServicios");
+        actionServicios->setMenuRole(QAction::MenuRole::NoRole);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         stackedWidgetPrincipal = new QStackedWidget(centralwidget);
         stackedWidgetPrincipal->setObjectName("stackedWidgetPrincipal");
-        stackedWidgetPrincipal->setGeometry(QRect(10, 90, 781, 471));
+        stackedWidgetPrincipal->setGeometry(QRect(20, 10, 771, 511));
         page = new QWidget();
         page->setObjectName("page");
-        label = new QLabel(page);
-        label->setObjectName("label");
-        label->setGeometry(QRect(250, 150, 301, 151));
+        widget = new QWidget(page);
+        widget->setObjectName("widget");
+        widget->setGeometry(QRect(0, 30, 751, 151));
         stackedWidgetPrincipal->addWidget(page);
         page_2 = new QWidget();
         page_2->setObjectName("page_2");
         label_2 = new QLabel(page_2);
         label_2->setObjectName("label_2");
-        label_2->setGeometry(QRect(320, 150, 431, 221));
+        label_2->setGeometry(QRect(490, 20, 101, 271));
         stackedWidgetPrincipal->addWidget(page_2);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -79,10 +99,15 @@ public:
 
         toolBar->addAction(actionProcesos);
         toolBar->addAction(actionRendimiento);
+        toolBar->addAction(actionHistorial_de_aplicaciones);
+        toolBar->addAction(actionInicio);
+        toolBar->addAction(actionUsuario);
+        toolBar->addAction(actionDetalles);
+        toolBar->addAction(actionServicios);
 
         retranslateUi(MainWindow);
 
-        stackedWidgetPrincipal->setCurrentIndex(1);
+        stackedWidgetPrincipal->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -93,7 +118,11 @@ public:
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         actionRendimiento->setText(QCoreApplication::translate("MainWindow", "Rendimiento", nullptr));
         actionProcesos->setText(QCoreApplication::translate("MainWindow", "Procesos", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "Vista procesos", nullptr));
+        actionHistorial_de_aplicaciones->setText(QCoreApplication::translate("MainWindow", "Historial de aplicaciones", nullptr));
+        actionInicio->setText(QCoreApplication::translate("MainWindow", "Inicio", nullptr));
+        actionUsuario->setText(QCoreApplication::translate("MainWindow", "Usuario", nullptr));
+        actionDetalles->setText(QCoreApplication::translate("MainWindow", "Detalles", nullptr));
+        actionServicios->setText(QCoreApplication::translate("MainWindow", "Servicios", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Vista rendimiento", nullptr));
         toolBar->setWindowTitle(QCoreApplication::translate("MainWindow", "toolBar", nullptr));
     } // retranslateUi
