@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1182</width>
+    <height>557</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,39 +17,36 @@
    <widget class="QStackedWidget" name="stackedWidgetPrincipal">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>29</x>
       <y>10</y>
-      <width>771</width>
-      <height>511</height>
+      <width>1141</width>
+      <height>471</height>
      </rect>
-    </property>
-    <property name="currentIndex">
-     <number>0</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QWidget" name="widget" native="true">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>30</y>
-        <width>751</width>
-        <height>151</height>
+        <x>-10</x>
+        <y>0</y>
+        <width>1151</width>
+        <height>481</height>
        </rect>
       </property>
      </widget>
     </widget>
     <widget class="QWidget" name="page_2">
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>490</x>
-        <y>20</y>
-        <width>101</width>
-        <height>271</height>
+        <x>410</x>
+        <y>60</y>
+        <width>66</width>
+        <height>18</height>
        </rect>
       </property>
       <property name="text">
-       <string>Vista rendimiento</string>
+       <string>vista rendimiento</string>
       </property>
      </widget>
     </widget>
@@ -60,7 +57,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1182</width>
      <height>23</height>
     </rect>
    </property>

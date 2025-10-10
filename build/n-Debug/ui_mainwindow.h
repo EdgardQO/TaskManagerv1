@@ -37,7 +37,7 @@ public:
     QWidget *page;
     QWidget *widget;
     QWidget *page_2;
-    QLabel *label_2;
+    QLabel *label;
     QMenuBar *menubar;
     QStatusBar *statusbar;
     QToolBar *toolBar;
@@ -46,7 +46,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(800, 600);
+        MainWindow->resize(1182, 557);
         actionRendimiento = new QAction(MainWindow);
         actionRendimiento->setObjectName("actionRendimiento");
         actionRendimiento->setMenuRole(QAction::MenuRole::NoRole);
@@ -72,23 +72,23 @@ public:
         centralwidget->setObjectName("centralwidget");
         stackedWidgetPrincipal = new QStackedWidget(centralwidget);
         stackedWidgetPrincipal->setObjectName("stackedWidgetPrincipal");
-        stackedWidgetPrincipal->setGeometry(QRect(20, 10, 771, 511));
+        stackedWidgetPrincipal->setGeometry(QRect(29, 10, 1141, 471));
         page = new QWidget();
         page->setObjectName("page");
         widget = new QWidget(page);
         widget->setObjectName("widget");
-        widget->setGeometry(QRect(0, 30, 751, 151));
+        widget->setGeometry(QRect(-10, 0, 1151, 481));
         stackedWidgetPrincipal->addWidget(page);
         page_2 = new QWidget();
         page_2->setObjectName("page_2");
-        label_2 = new QLabel(page_2);
-        label_2->setObjectName("label_2");
-        label_2->setGeometry(QRect(490, 20, 101, 271));
+        label = new QLabel(page_2);
+        label->setObjectName("label");
+        label->setGeometry(QRect(410, 60, 66, 18));
         stackedWidgetPrincipal->addWidget(page_2);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 800, 23));
+        menubar->setGeometry(QRect(0, 0, 1182, 23));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -107,9 +107,6 @@ public:
 
         retranslateUi(MainWindow);
 
-        stackedWidgetPrincipal->setCurrentIndex(0);
-
-
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
@@ -123,7 +120,7 @@ public:
         actionUsuario->setText(QCoreApplication::translate("MainWindow", "Usuario", nullptr));
         actionDetalles->setText(QCoreApplication::translate("MainWindow", "Detalles", nullptr));
         actionServicios->setText(QCoreApplication::translate("MainWindow", "Servicios", nullptr));
-        label_2->setText(QCoreApplication::translate("MainWindow", "Vista rendimiento", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "vista rendimiento", nullptr));
         toolBar->setWindowTitle(QCoreApplication::translate("MainWindow", "toolBar", nullptr));
     } // retranslateUi
 
