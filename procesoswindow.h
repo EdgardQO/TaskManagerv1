@@ -20,6 +20,8 @@ private:
     QTableView *tableViewProcesos;
     ProcessTableModel *m_processModel;
     QTimer *m_timer;
+    void on_tableViewProcesos_customContextMenuRequested(const QPoint &pos);
+    void terminateProcess(); // Slot para la acción "Finalizar Tarea"
 };
 
 #endif // PROCESOSWINDOW_H
