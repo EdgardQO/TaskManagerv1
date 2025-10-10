@@ -17,7 +17,7 @@ ProcesosWindow::ProcesosWindow(QWidget *parent)
     tableViewProcesos->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
 
-    //orden
+    //orden --> VERIFICAR FUNCIONALIDAD PORQUE ES UNA BASURA ACTUALMENTE
     tableViewProcesos->sortByColumn(0,Qt::AscendingOrder);
 
 

@@ -5,12 +5,6 @@
 #include <QRegularExpression>
 #include <algorithm>
 
-
-
-// =======================================================
-// MÉTODOS REQUERIDOS DEL MODELO
-// =======================================================
-
 ProcessTableModel::ProcessTableModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
@@ -26,7 +20,7 @@ int ProcessTableModel::rowCount(const QModelIndex &parent) const
 int ProcessTableModel::columnCount(const QModelIndex &parent) const
 {
     if (parent.isValid()) return 0;
-    return 3; // Columnas: Nombre, % CPU, PID
+    return 4; // Columnas: Nombre, % CPU, PID
 }
 
 QVariant ProcessTableModel::headerData(int section, Qt::Orientation orientation, int role) const
