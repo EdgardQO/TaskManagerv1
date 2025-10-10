@@ -22,6 +22,8 @@ private:
     QTimer *m_timer;
     void on_tableViewProcesos_customContextMenuRequested(const QPoint &pos);
     void terminateProcess(); // Slot para la acción "Finalizar Tarea"
+    // 🚨 NUEVO: Slot para manejar la actualización y la selección
+    void refreshProcessListAndMaintainSelection();
 };
 
 #endif // PROCESOSWINDOW_H

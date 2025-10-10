@@ -236,17 +236,42 @@ void ProcessTableModel::updateProcessList()
 
 void ProcessTableModel::sort(int column, Qt::SortOrder order)
 {
-    // 🚨 1. GUARDA EL ESTADO DE ORDENACIÓN (CORRECTO)
+    // 1. GUARDA EL ESTADO DE ORDENACIÓN
     m_sortColumn = column;
     m_sortOrder = order;
 
+    // Nota: No se llama a layoutAboutToBeChanged/layoutChanged porque
+    // updateProcessList() envuelve esto en beginResetModel/endResetModel.
+
     // 2. Lógica de Ordenación:
     std::sort(m_processList.begin(), m_processList.end(),
-              // ... (Tu lambda de comparación, que es correcta)
               [column, order](const ProcessInfo &a, const ProcessInfo &b) {
-                  // ...
-                  return false;
+                  bool lessThan; // Indica si 'a' debe ir antes que 'b' (AscendingOrder)
+
+                  switch (column) {
+                  case 0: // Nombre del Proceso (QString)
+                      lessThan = a.name.toLower() < b.name.toLower(); // toLower() para ordenación alfabética insensible a mayúsculas
+                      break;
+                  case 1: // % CPU (double)
+                      lessThan = a.cpu_usage < b.cpu_usage;
+                      break;
+                  case 2: // Memoria (long long - KB)
+                      lessThan = a.memory_usage_kb < b.memory_usage_kb;
+                      break;
+                  case 3: // PID (int)
+                      lessThan = a.pid < b.pid;
+                      break;
+                  default:
+                      lessThan = false;
+                  }
+
+                  // Aplicar el orden (Ascendente o Descendente)
+                  if (order == Qt::AscendingOrder) {
+                      return lessThan;
+                  } else {
+                      return !lessThan; // Si es Descendente, la lógica es inversa
+                  }
               });
 
-    // 🚨 3. ELIMINAR: NO LLAMAR A begin/endResetModel AQUÍ
+    // 🚨 3. ELIMINAR: NO LLAMAR A begin/endResetModel AQUÍ (Correcto, se omite).
 }

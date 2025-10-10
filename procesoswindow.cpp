@@ -46,8 +46,47 @@ ProcesosWindow::ProcesosWindow(QWidget *parent)
 
     // 4. Configurar e iniciar el temporizador
     m_timer = new QTimer(this);
-    connect(m_timer, &QTimer::timeout, m_processModel, &ProcessTableModel::updateProcessList);
+    // 🚨 MODIFICACIÓN: Conectar al nuevo slot de la propia ventana
+    connect(m_timer, &QTimer::timeout, this, &ProcesosWindow::refreshProcessListAndMaintainSelection);
     m_timer->start(1000); // 1 segundo
+}
+
+// 🚨 NUEVA FUNCIÓN: Mantiene la selección antes y después de la actualización del modelo.
+void ProcesosWindow::refreshProcessListAndMaintainSelection()
+{
+    int selectedPid = -1;
+
+    // 1. Guardar el PID del proceso seleccionado (si hay alguno)
+    QModelIndexList selectedRows = tableViewProcesos->selectionModel()->selectedRows();
+
+    if (!selectedRows.isEmpty()) {
+        QModelIndex index = selectedRows.first();
+        // Obtener el PID (Columna 3) usando el índice en el modelo
+        QVariant pidVariant = m_processModel->data(m_processModel->index(index.row(), 3), Qt::DisplayRole);
+        selectedPid = pidVariant.toInt();
+    }
+
+    // 2. Actualizar la lista de procesos (esto llama a beginResetModel/endResetModel y pierde la selección)
+    m_processModel->updateProcessList();
+
+    // 3. Intentar re-seleccionar la fila usando el PID
+    if (selectedPid != -1) {
+        QModelIndex newIndex;
+        // Buscar el PID en el modelo actualizado. Iterar sobre las filas.
+        for (int row = 0; row < m_processModel->rowCount(); ++row) {
+            QModelIndex pidIndex = m_processModel->index(row, 3); // Columna 3 es el PID
+            if (m_processModel->data(pidIndex, Qt::DisplayRole).toInt() == selectedPid) {
+                // Encontrado. Seleccionar la primera columna (columna 0) de esa fila
+                newIndex = m_processModel->index(row, 0);
+                break;
+            }
+        }
+
+        if (newIndex.isValid()) {
+            // Re-seleccionar la fila
+            tableViewProcesos->selectRow(newIndex.row());
+        }
+    }
 }
 
 void ProcesosWindow::on_tableViewProcesos_customContextMenuRequested(const QPoint &pos)
