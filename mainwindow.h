@@ -44,6 +44,8 @@ private:
     Ui::MainWindow *ui;
     int m_procesosIndex = 0;
 
-    // Si usas el índice 4 para "Inicio", no necesitas más miembros aquí.
+
+    void highlightActiveAction(int index);
+
 };
 #endif // MAINWINDOW_H

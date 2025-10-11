@@ -6,6 +6,7 @@
 #include "usuarioswindow.h" // 🚨 Incluir la nueva ventana
 #include "servicioswindow.h" // 🚨 Incluir la nueva ventana
 #include "historialwindow.h" // 🚨 Incluir la nueva ventana de Historial
+#include "rendimientowindow.h" // 🚨 Incluir la nueva ventana
 
 
 
@@ -15,7 +16,22 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setWindowTitle("Administrador de Tareas");
+    this->setWindowTitle(" 💻 Administrador de Tareas");
+
+    QWidget *rendimientoContainer = ui->stackedWidgetPrincipal->widget(1);
+
+    if (rendimientoContainer) {
+        // a. Crear la instancia de la página de rendimiento
+        RendimientoWindow *rendimientoView = new RendimientoWindow(rendimientoContainer);
+
+        // b. ESTABLECER UN LAYOUT en el contenedor original y añadir la vista
+        QVBoxLayout *rendimientoLayout = new QVBoxLayout(rendimientoContainer);
+        rendimientoLayout->setContentsMargins(0, 0, 0, 0);
+        rendimientoLayout->addWidget(rendimientoView);
+
+        // c. Hace visible el widget hijo
+        rendimientoView->show();
+    }
 
     // =======================================================
     // 1. INTEGRACIÓN DEL WIDGET DE PROCESOS (DENTRO DEL CONTENEDOR EXISTENTE)
@@ -145,12 +161,21 @@ MainWindow::MainWindow(QWidget *parent)
 
     // VISTA INICIAL: Establece la Page 0 (Procesos)
     ui->stackedWidgetPrincipal->setCurrentIndex(0);
+
+    highlightActiveAction(0);
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+/*
+ESTO LO QUITAMOS PORQUE IMPLEMENTAMOS LO DE RESALTADO DE OPCIONES
+
+En mainwindow.h esto en private va:     void highlightActiveAction(int index);
+
 
 void MainWindow::on_actionProcesos_triggered()
 {
@@ -191,4 +216,100 @@ void MainWindow::on_actionHistorial_triggered()
 {
     // Carga la Page 2 (Historial)
     ui->stackedWidgetPrincipal->setCurrentIndex(2);
+}
+
+
+*/
+
+// 🚨 Implementación de la Lógica de Resaltado
+void MainWindow::highlightActiveAction(int index)
+{
+    QList<QAction*> actions;
+    // Agregamos todas las acciones relevantes
+    actions << ui->actionProcesos
+            << ui->actionRendimiento
+            << ui->actionHistorial
+            << ui->actionInicio
+            << ui->actionUsuarios
+            << ui->actionDetalles
+            << ui->actionServicios;
+
+    // Mapa de índice del stackedWidget a QAction
+    QMap<int, QAction*> indexToAction;
+    indexToAction[0] = ui->actionProcesos;
+    indexToAction[1] = ui->actionRendimiento;
+    indexToAction[2] = ui->actionHistorial;
+    indexToAction[3] = ui->actionInicio;
+    indexToAction[4] = ui->actionUsuarios;
+    indexToAction[5] = ui->actionDetalles;
+    indexToAction[6] = ui->actionServicios;
+
+    // Aplicar o limpiar el estilo
+    for (QAction *action : actions) {
+        // Obtenemos el widget que contiene el QAction (generalmente un QToolButton dentro de la barra)
+        QWidget *widget = ui->toolBar->widgetForAction(action);
+
+        if (widget) {
+            bool isActive = (indexToAction.contains(index) && indexToAction[index] == action);
+
+            if (isActive) {
+                // 🚨 Aplica un estilo de fondo y un color de texto para resaltar (Ejemplo: Azul Claro)
+                widget->setStyleSheet("QToolButton { background-color: #FFD9A3; color: black; border: 1px solid #F7B377; border-radius: 4px; }");
+            } else {
+                // 🚨 Limpia el estilo para las acciones inactivas
+                widget->setStyleSheet("QToolButton { background-color: transparent; color: black; border: none; }");
+            }
+        }
+    }
+}
+
+// 🚨 Slots de Navegación Modificados para incluir el resaltado
+
+void MainWindow::on_actionProcesos_triggered()
+{
+    int index = 0;
+    ui->stackedWidgetPrincipal->setCurrentIndex(index);
+    highlightActiveAction(index);
+}
+
+void MainWindow::on_actionRendimiento_triggered()
+{
+    int index = 1;
+    ui->stackedWidgetPrincipal->setCurrentIndex(index);
+    highlightActiveAction(index);
+}
+
+void MainWindow::on_actionHistorial_triggered()
+{
+    int index = 2;
+    ui->stackedWidgetPrincipal->setCurrentIndex(index);
+    highlightActiveAction(index);
+}
+
+void MainWindow::on_actionInicio_triggered()
+{
+    int index = 3;
+    ui->stackedWidgetPrincipal->setCurrentIndex(index);
+    highlightActiveAction(index);
+}
+
+void MainWindow::on_actionUsuarios_triggered()
+{
+    int index = 4;
+    ui->stackedWidgetPrincipal->setCurrentIndex(index);
+    highlightActiveAction(index);
+}
+
+void MainWindow::on_actionDetalles_triggered()
+{
+    int index = 5;
+    ui->stackedWidgetPrincipal->setCurrentIndex(index);
+    highlightActiveAction(index);
+}
+
+void MainWindow::on_actionServicios_triggered()
+{
+    int index = 6;
+    ui->stackedWidgetPrincipal->setCurrentIndex(index);
+    highlightActiveAction(index);
 }

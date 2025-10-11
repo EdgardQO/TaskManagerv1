@@ -14,101 +14,97 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QStackedWidget" name="stackedWidgetPrincipal">
+   <widget class="QWidget" name="widget_4" native="true">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>20</y>
-      <width>1141</width>
-      <height>471</height>
+      <x>20</x>
+      <y>10</y>
+      <width>1121</width>
+      <height>461</height>
      </rect>
     </property>
-    <widget class="QWidget" name="page">
-     <widget class="QWidget" name="widget" native="true">
-      <property name="geometry">
-       <rect>
-        <x>-10</x>
-        <y>0</y>
-        <width>1151</width>
-        <height>481</height>
-       </rect>
-      </property>
+    <widget class="QStackedWidget" name="stackedWidgetPrincipal">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>1141</width>
+       <height>471</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="page">
+      <widget class="QWidget" name="widget_5" native="true">
+       <property name="geometry">
+        <rect>
+         <x>-11</x>
+         <y>-11</y>
+         <width>1131</width>
+         <height>461</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
-    </widget>
-    <widget class="QWidget" name="page_2">
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>410</x>
-        <y>60</y>
-        <width>66</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>vista rendimiento</string>
-      </property>
+     <widget class="QWidget" name="page_2">
+      <widget class="QWidget" name="widget_7" native="true">
+       <property name="geometry">
+        <rect>
+         <x>-20</x>
+         <y>-10</y>
+         <width>1131</width>
+         <height>461</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
-    </widget>
-    <widget class="QWidget" name="page_3">
-     <widget class="QWidget" name="widget_2" native="true">
-      <property name="geometry">
-       <rect>
-        <x>-11</x>
-        <y>-1</y>
-        <width>1141</width>
-        <height>461</height>
-       </rect>
-      </property>
+     <widget class="QWidget" name="page_3">
+      <widget class="QWidget" name="widget_2" native="true">
+       <property name="geometry">
+        <rect>
+         <x>-11</x>
+         <y>-1</y>
+         <width>1141</width>
+         <height>461</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
-    </widget>
-    <widget class="QWidget" name="page_4">
-     <widget class="QWidget" name="widget_3" native="true">
-      <property name="geometry">
-       <rect>
-        <x>-11</x>
-        <y>-11</y>
-        <width>1141</width>
-        <height>471</height>
-       </rect>
-      </property>
+     <widget class="QWidget" name="page_4">
+      <widget class="QWidget" name="widget_3" native="true">
+       <property name="geometry">
+        <rect>
+         <x>-11</x>
+         <y>-11</y>
+         <width>1141</width>
+         <height>471</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
-    </widget>
-    <widget class="QWidget" name="page_5">
-     <widget class="QWidget" name="widget_4" native="true">
-      <property name="geometry">
-       <rect>
-        <x>9</x>
-        <y>-1</y>
-        <width>1121</width>
-        <height>461</height>
-       </rect>
-      </property>
+     <widget class="QWidget" name="page_5">
+      <widget class="QWidget" name="widget" native="true">
+       <property name="geometry">
+        <rect>
+         <x>-1</x>
+         <y>-1</y>
+         <width>1121</width>
+         <height>451</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
-    </widget>
-    <widget class="QWidget" name="page_6">
-     <widget class="QWidget" name="widget_6" native="true">
-      <property name="geometry">
-       <rect>
-        <x>-20</x>
-        <y>-10</y>
-        <width>1161</width>
-        <height>471</height>
-       </rect>
-      </property>
+     <widget class="QWidget" name="page_6">
+      <widget class="QWidget" name="widget_6" native="true">
+       <property name="geometry">
+        <rect>
+         <x>-20</x>
+         <y>-10</y>
+         <width>1161</width>
+         <height>471</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
-    </widget>
-    <widget class="QWidget" name="page_7">
-     <widget class="QWidget" name="widget_5" native="true">
-      <property name="geometry">
-       <rect>
-        <x>-20</x>
-        <y>-10</y>
-        <width>1151</width>
-        <height>331</height>
-       </rect>
-      </property>
-     </widget>
+     <widget class="QWidget" name="page_7"/>
     </widget>
    </widget>
   </widget>

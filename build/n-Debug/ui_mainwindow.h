@@ -12,7 +12,6 @@
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStackedWidget>
@@ -33,21 +32,21 @@ public:
     QAction *actionUsuarios;
     QAction *actionHistorial;
     QWidget *centralwidget;
+    QWidget *widget_4;
     QStackedWidget *stackedWidgetPrincipal;
     QWidget *page;
-    QWidget *widget;
+    QWidget *widget_5;
     QWidget *page_2;
-    QLabel *label;
+    QWidget *widget_7;
     QWidget *page_3;
     QWidget *widget_2;
     QWidget *page_4;
     QWidget *widget_3;
     QWidget *page_5;
-    QWidget *widget_4;
+    QWidget *widget;
     QWidget *page_6;
     QWidget *widget_6;
     QWidget *page_7;
-    QWidget *widget_5;
     QMenuBar *menubar;
     QStatusBar *statusbar;
     QToolBar *toolBar;
@@ -80,20 +79,23 @@ public:
         actionHistorial->setMenuRole(QAction::MenuRole::NoRole);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
-        stackedWidgetPrincipal = new QStackedWidget(centralwidget);
+        widget_4 = new QWidget(centralwidget);
+        widget_4->setObjectName("widget_4");
+        widget_4->setGeometry(QRect(20, 10, 1121, 461));
+        stackedWidgetPrincipal = new QStackedWidget(widget_4);
         stackedWidgetPrincipal->setObjectName("stackedWidgetPrincipal");
-        stackedWidgetPrincipal->setGeometry(QRect(30, 20, 1141, 471));
+        stackedWidgetPrincipal->setGeometry(QRect(20, 20, 1141, 471));
         page = new QWidget();
         page->setObjectName("page");
-        widget = new QWidget(page);
-        widget->setObjectName("widget");
-        widget->setGeometry(QRect(-10, 0, 1151, 481));
+        widget_5 = new QWidget(page);
+        widget_5->setObjectName("widget_5");
+        widget_5->setGeometry(QRect(-11, -11, 1131, 461));
         stackedWidgetPrincipal->addWidget(page);
         page_2 = new QWidget();
         page_2->setObjectName("page_2");
-        label = new QLabel(page_2);
-        label->setObjectName("label");
-        label->setGeometry(QRect(410, 60, 66, 18));
+        widget_7 = new QWidget(page_2);
+        widget_7->setObjectName("widget_7");
+        widget_7->setGeometry(QRect(-20, -10, 1131, 461));
         stackedWidgetPrincipal->addWidget(page_2);
         page_3 = new QWidget();
         page_3->setObjectName("page_3");
@@ -109,9 +111,9 @@ public:
         stackedWidgetPrincipal->addWidget(page_4);
         page_5 = new QWidget();
         page_5->setObjectName("page_5");
-        widget_4 = new QWidget(page_5);
-        widget_4->setObjectName("widget_4");
-        widget_4->setGeometry(QRect(9, -1, 1121, 461));
+        widget = new QWidget(page_5);
+        widget->setObjectName("widget");
+        widget->setGeometry(QRect(-1, -1, 1121, 451));
         stackedWidgetPrincipal->addWidget(page_5);
         page_6 = new QWidget();
         page_6->setObjectName("page_6");
@@ -121,9 +123,6 @@ public:
         stackedWidgetPrincipal->addWidget(page_6);
         page_7 = new QWidget();
         page_7->setObjectName("page_7");
-        widget_5 = new QWidget(page_7);
-        widget_5->setObjectName("widget_5");
-        widget_5->setGeometry(QRect(-20, -10, 1151, 331));
         stackedWidgetPrincipal->addWidget(page_7);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -160,7 +159,6 @@ public:
         actionServicios->setText(QCoreApplication::translate("MainWindow", "Servicios", nullptr));
         actionUsuarios->setText(QCoreApplication::translate("MainWindow", "Usuarios", nullptr));
         actionHistorial->setText(QCoreApplication::translate("MainWindow", "Historial", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "vista rendimiento", nullptr));
         toolBar->setWindowTitle(QCoreApplication::translate("MainWindow", "toolBar", nullptr));
     } // retranslateUi
 

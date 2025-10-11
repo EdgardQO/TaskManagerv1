@@ -1,4 +1,5 @@
 QT       += core gui
+QT       += charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,6 +10,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    cpuwidget.cpp \
     detalleswindow.cpp \
     historialwindow.cpp \
     historymanager.cpp \
@@ -17,12 +19,15 @@ SOURCES += \
     mainwindow.cpp \
     procesoswindow.cpp \
     processtablemodel.cpp \
+    recursos.cpp \
+    rendimientowindow.cpp \
     servicioswindow.cpp \
     startupmodel.cpp \
     startupwindow.cpp \
     usuarioswindow.cpp
 
 HEADERS += \
+    cpuwidget.h \
     detalleswindow.h \
     historialwindow.h \
     historymanager.h \
@@ -30,6 +35,8 @@ HEADERS += \
     mainwindow.h \
     procesoswindow.h \
     processtablemodel.h \
+    recursos.h \
+    rendimientowindow.h \
     servicioswindow.h \
     startupmodel.h \
     startupwindow.h \
