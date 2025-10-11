@@ -17,8 +17,8 @@
    <widget class="QStackedWidget" name="stackedWidgetPrincipal">
     <property name="geometry">
      <rect>
-      <x>29</x>
-      <y>10</y>
+      <x>30</x>
+      <y>20</y>
       <width>1141</width>
       <height>471</height>
      </rect>
@@ -47,6 +47,42 @@
       </property>
       <property name="text">
        <string>vista rendimiento</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_3">
+     <widget class="QWidget" name="widget_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>-11</x>
+        <y>-1</y>
+        <width>1141</width>
+        <height>461</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_4">
+     <widget class="QWidget" name="widget_3" native="true">
+      <property name="geometry">
+       <rect>
+        <x>-11</x>
+        <y>-11</y>
+        <width>1141</width>
+        <height>471</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_5">
+     <widget class="QWidget" name="widget_4" native="true">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>-1</y>
+        <width>1121</width>
+        <height>461</height>
+       </rect>
       </property>
      </widget>
     </widget>

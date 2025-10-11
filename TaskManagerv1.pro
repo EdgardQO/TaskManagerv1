@@ -12,12 +12,16 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     procesoswindow.cpp \
-    processtablemodel.cpp
+    processtablemodel.cpp \
+    startupmodel.cpp \
+    startupwindow.cpp
 
 HEADERS += \
     mainwindow.h \
     procesoswindow.h \
-    processtablemodel.h
+    processtablemodel.h \
+    startupmodel.h \
+    startupwindow.h
 
 FORMS += \
     mainwindow.ui

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "procesoswindow.h"
+#include "startupwindow.h" // 🚨 Incluir la nueva ventana
 #include <QVBoxLayout> // Necesario para el layout
 
 MainWindow::MainWindow(QWidget *parent)
@@ -31,6 +32,24 @@ MainWindow::MainWindow(QWidget *parent)
     // d. IMPORTANTE: Hace visible el widget hijo
     procesosView->show();
 
+    QWidget *startupContainer = ui->stackedWidgetPrincipal->widget(3);
+
+    if (startupContainer) {
+        // b. Crear la instancia de la página de inicio
+        StartupWindow *startupView = new StartupWindow(startupContainer);
+
+        // c. ESTABLECER UN LAYOUT en el contenedor original y añadir la vista
+        QVBoxLayout *startupLayout = new QVBoxLayout(startupContainer);
+        startupLayout->setContentsMargins(0, 0, 0, 0);
+        startupLayout->addWidget(startupView);
+
+        // d. Hace visible el widget hijo
+        startupView->show();
+    }
+
+
+
+
     // =======================================================
     // 2. CONEXIONES Y VISTA INICIAL
     // =======================================================
@@ -40,6 +59,9 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::on_actionProcesos_triggered);
     connect(ui->actionRendimiento, &QAction::triggered,
             this, &MainWindow::on_actionRendimiento_triggered);
+    // 🚨 Conexión para la acción de inicio
+    connect(ui->actionInicio, &QAction::triggered,
+            this, &MainWindow::on_actionInicio_triggered);
 
     // VISTA INICIAL: Establece la Page 0 (Procesos)
     ui->stackedWidgetPrincipal->setCurrentIndex(0);
@@ -60,4 +82,9 @@ void MainWindow::on_actionRendimiento_triggered()
 {
     // Carga la Page 1 (Rendimiento)
     ui->stackedWidgetPrincipal->setCurrentIndex(1);
+}
+// 🚨 Implementación del nuevo slot para Inicio
+void MainWindow::on_actionInicio_triggered()
+{
+    ui->stackedWidgetPrincipal->setCurrentIndex(3);
 }
