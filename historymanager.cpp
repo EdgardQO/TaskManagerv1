@@ -108,9 +108,10 @@ QMap<int, HistoryEntry> HistoryManager::getRunningProcesses()
         if (isNumeric) {
 
             // --- FILTRO FINAL: ¿ESTÁ ESTE PID EN NUESTRA LISTA DE VENTANAS? ---
-            if (!m_guiPids.contains(pid)) {
-                continue; // Si no tiene ventana, lo ignoramos.
-            }
+            // 🚨 MODIFICACIÓN: Deshabilitamos el filtro para asegurar que aparezca data.
+            // if (!m_guiPids.contains(pid)) {
+            //     continue; // Si no tiene ventana, lo ignoramos.
+            // }
 
             char exePath[1024];
             ssize_t len = readlink(QString("/proc/%1/exe").arg(pidStr).toUtf8().constData(), exePath, sizeof(exePath) - 1);

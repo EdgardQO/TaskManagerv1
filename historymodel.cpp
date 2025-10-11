@@ -1,4 +1,5 @@
 #include "historymodel.h"
+#include <QtMath> // Necesario para qRound
 
 HistoryModel::HistoryModel(HistoryManager *manager, QObject *parent)
     : QAbstractTableModel(parent), m_manager(manager)
@@ -31,7 +32,7 @@ QVariant HistoryModel::headerData(int section, Qt::Orientation orientation, int 
     switch (section) {
     case 0: return "Aplicaciones";
     case 1: return "PID";
-    case 2: return "Memoria (KB)";
+    case 2: return "Memoria (MB)"; // Mostrar en MB
     case 3: return "Tiempo CPU (s)";
     case 4: return "Hora de Inicio";
     case 5: return "Hora de Fin";
@@ -41,17 +42,58 @@ QVariant HistoryModel::headerData(int section, Qt::Orientation orientation, int 
 
 QVariant HistoryModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || role != Qt::DisplayRole) {
+    if (!index.isValid()) {
         return QVariant();
     }
 
-    const HistoryEntry &entry = m_manager->getHistoryLog().at(rowCount() - 1 - index.row());
+    const QList<HistoryEntry> &log = m_manager->getHistoryLog();
+    // Invertimos la fila porque el modelo muestra el historial más reciente arriba
+    const HistoryEntry &entry = log.at(log.count() - 1 - index.row());
+
+    // 🚨 CORRECCIÓN: Conversión explícita a (int) para Qt::TextAlignmentRole
+    if (role == Qt::TextAlignmentRole) {
+        switch (index.column()) {
+        case 1: // PID
+        case 2: // Memoria
+        case 3: // Tiempo CPU
+            // Devolver la combinación de banderas convertida a int
+            return (int)(Qt::AlignRight | Qt::AlignVCenter);
+        case 4: // Inicio
+        case 5: // Fin
+            return (int)Qt::AlignCenter;
+        default:
+            // Aplicaciones
+            return (int)(Qt::AlignLeft | Qt::AlignVCenter);
+        }
+    }
+
+    if (role != Qt::DisplayRole) {
+        return QVariant();
+    }
 
     switch (index.column()) {
-    case 0: return entry.name;
+    case 0:
+    {
+        // Limpiar el nombre de la aplicación
+        QString name = entry.name;
+        int lastSlash = name.lastIndexOf('/');
+        if (lastSlash != -1) {
+            name = name.mid(lastSlash + 1);
+        }
+        return name;
+    }
     case 1: return entry.pid;
-    case 2: return QString::number(entry.memoryUsageKB);
-    case 3: return QString::number(entry.cpuTimeSecs, 'f', 2);
+    case 2:
+    {
+        // Mostrar en MB y redondear
+        double memoryMB = static_cast<double>(entry.memoryUsageKB) / 1024.0;
+        return QString::number(qRound(memoryMB));
+    }
+    case 3:
+    {
+        // Formatear el tiempo CPU con dos decimales
+        return QString::number(entry.cpuTimeSecs, 'f', 2);
+    }
     case 4: return entry.startTime.toString("hh:mm:ss");
     case 5:
         return (entry.status == HistoryEntry::FINISHED) ? entry.endTime.toString("hh:mm:ss") : "En ejecución";

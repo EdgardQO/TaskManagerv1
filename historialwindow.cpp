@@ -21,13 +21,18 @@ HistorialWindow::HistorialWindow(QWidget *parent)
     m_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_tableView->verticalHeader()->setVisible(false);
 
-    // Ajustar columnas
-    m_tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch); // Aplicaciones
+    // 🚨 MODIFICACIÓN: Mejorar el redimensionamiento de columnas para que los números se vean.
+    // Usamos Stretch para Aplicaciones y ResizeToContents para el resto.
+
+    // Columna 0: Aplicaciones - Toma el espacio restante
+    m_tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+
+    // Las columnas numéricas se ajustan al contenido más ancho.
     m_tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents); // PID
-    m_tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents); // Memoria
-    m_tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents); // Tiempo CPU
-    m_tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents); // Inicio
-    m_tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents); // Fin
+    m_tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents); // Memoria (MB)
+    m_tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents); // Tiempo CPU (s)
+    m_tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents); // Hora de Inicio
+    m_tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents); // Hora de Fin
 
     // 4. Configurar el layout
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
