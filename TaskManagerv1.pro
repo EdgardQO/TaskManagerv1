@@ -9,19 +9,31 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    detalleswindow.cpp \
+    historialwindow.cpp \
+    historymanager.cpp \
+    historymodel.cpp \
     main.cpp \
     mainwindow.cpp \
     procesoswindow.cpp \
     processtablemodel.cpp \
+    servicioswindow.cpp \
     startupmodel.cpp \
-    startupwindow.cpp
+    startupwindow.cpp \
+    usuarioswindow.cpp
 
 HEADERS += \
+    detalleswindow.h \
+    historialwindow.h \
+    historymanager.h \
+    historymodel.h \
     mainwindow.h \
     procesoswindow.h \
     processtablemodel.h \
+    servicioswindow.h \
     startupmodel.h \
-    startupwindow.h
+    startupwindow.h \
+    usuarioswindow.h
 
 FORMS += \
     mainwindow.ui

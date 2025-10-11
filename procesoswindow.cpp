@@ -1,8 +1,9 @@
 #include "procesoswindow.h"
 #include <QMenu>
 #include <QMessageBox>
-#include <QProcess> // Necesario para ejecutar comandos del sistema (kill)
-
+#include <QProcess>
+#include <QScrollBar> // Necesario para el manejo del scroll
+#include <QSet> // Útil para almacenar PIDs de forma eficiente
 
 ProcesosWindow::ProcesosWindow(QWidget *parent)
     : QWidget(parent)
@@ -16,11 +17,11 @@ ProcesosWindow::ProcesosWindow(QWidget *parent)
     tableViewProcesos->setSortingEnabled(true);
 
 
-    // 🚨 CONFIGURACIÓN CRUCIAL DE SELECCIÓN DE FILAS
+    // 🚨 MODIFICACIÓN 1: Permitir Selección Múltiple
     // 1. Establece el modo de selección: seleccionar filas enteras.
     tableViewProcesos->setSelectionBehavior(QAbstractItemView::SelectRows);
-    // 2. Establece el modo de selección: solo puedes seleccionar una fila a la vez.
-    tableViewProcesos->setSelectionMode(QAbstractItemView::SingleSelection);
+    // 2. CAMBIO: Permite selección múltiple (ExtendedSelection: Ctrl/Shift para seleccionar varios)
+    tableViewProcesos->setSelectionMode(QAbstractItemView::ExtendedSelection);
     // 3. Habilita el menú contextual (clic derecho)
     tableViewProcesos->setContextMenuPolicy(Qt::CustomContextMenu);
     // ----------------------------------------------------
@@ -46,47 +47,56 @@ ProcesosWindow::ProcesosWindow(QWidget *parent)
 
     // 4. Configurar e iniciar el temporizador
     m_timer = new QTimer(this);
-    // 🚨 MODIFICACIÓN: Conectar al nuevo slot de la propia ventana
+    // Conectar al slot que mantiene la selección y el scroll
     connect(m_timer, &QTimer::timeout, this, &ProcesosWindow::refreshProcessListAndMaintainSelection);
     m_timer->start(1000); // 1 segundo
 }
 
-// 🚨 NUEVA FUNCIÓN: Mantiene la selección antes y después de la actualización del modelo.
+// 🚨 MODIFICACIÓN 2: Mantiene la selección Y LA POSICIÓN DEL SCROLL
 void ProcesosWindow::refreshProcessListAndMaintainSelection()
 {
-    int selectedPid = -1;
+    // 1. Guardar la posición del scroll vertical ANTES de la actualización
+    int scrollValue = tableViewProcesos->verticalScrollBar()->value();
 
-    // 1. Guardar el PID del proceso seleccionado (si hay alguno)
+    // 2. Guardar los PIDs de todos los procesos seleccionados
+    QSet<int> selectedPids;
     QModelIndexList selectedRows = tableViewProcesos->selectionModel()->selectedRows();
 
-    if (!selectedRows.isEmpty()) {
-        QModelIndex index = selectedRows.first();
-        // Obtener el PID (Columna 3) usando el índice en el modelo
+    for (const QModelIndex &index : selectedRows) {
+        // Obtener el PID (Columna 3)
+        // Usamos la columna 3 (PID) para identificar de forma única
         QVariant pidVariant = m_processModel->data(m_processModel->index(index.row(), 3), Qt::DisplayRole);
-        selectedPid = pidVariant.toInt();
+        selectedPids.insert(pidVariant.toInt());
     }
 
-    // 2. Actualizar la lista de procesos (esto llama a beginResetModel/endResetModel y pierde la selección)
+    // 3. Actualizar la lista de procesos (esto llama a beginResetModel/endResetModel y pierde selección)
     m_processModel->updateProcessList();
 
-    // 3. Intentar re-seleccionar la fila usando el PID
-    if (selectedPid != -1) {
-        QModelIndex newIndex;
-        // Buscar el PID en el modelo actualizado. Iterar sobre las filas.
+    // 4. Intentar re-seleccionar las filas usando los PIDs guardados
+    if (!selectedPids.isEmpty()) {
+        QItemSelection newSelection;
+
         for (int row = 0; row < m_processModel->rowCount(); ++row) {
             QModelIndex pidIndex = m_processModel->index(row, 3); // Columna 3 es el PID
-            if (m_processModel->data(pidIndex, Qt::DisplayRole).toInt() == selectedPid) {
-                // Encontrado. Seleccionar la primera columna (columna 0) de esa fila
-                newIndex = m_processModel->index(row, 0);
-                break;
+
+            if (selectedPids.contains(m_processModel->data(pidIndex, Qt::DisplayRole).toInt())) {
+                // Encontrado. Crear una selección para toda la fila
+                QModelIndex start = m_processModel->index(row, 0);
+                QModelIndex end = m_processModel->index(row, m_processModel->columnCount() - 1);
+                newSelection.select(start, end);
             }
         }
 
-        if (newIndex.isValid()) {
-            // Re-seleccionar la fila
-            tableViewProcesos->selectRow(newIndex.row());
-        }
+        // 🚨 CAMBIO CLAVE: Aplicar la selección de una vez usando QItemSelectionModel::select.
+        // Se usa ClearAndSelect para reemplazar la selección anterior (perdida) y Rows para asegurar la fila completa.
+        // Al NO usar el método 'selectRow(row)', evitamos que se intente establecer un índice 'current'
+        // que es lo que usualmente fuerza el autoscroll.
+        tableViewProcesos->selectionModel()->select(newSelection, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
     }
+
+    // 5. Restaurar la posición del scroll vertical
+    // Esto se hace al final para anular cualquier intento de autoscroll de la vista.
+    tableViewProcesos->verticalScrollBar()->setValue(scrollValue);
 }
 
 void ProcesosWindow::on_tableViewProcesos_customContextMenuRequested(const QPoint &pos)
@@ -102,16 +112,17 @@ void ProcesosWindow::on_tableViewProcesos_customContextMenuRequested(const QPoin
     QMenu contextMenu(this);
 
     // 3. Crear la acción "Finalizar Tarea" y conectarla
-    QAction *terminateAction = contextMenu.addAction("Finalizar Tarea");
+    QAction *terminateAction = contextMenu.addAction("Finalizar Tarea(s)");
     connect(terminateAction, &QAction::triggered, this, &ProcesosWindow::terminateProcess);
 
     // 4. Mostrar el menú en la posición del mouse
     contextMenu.exec(tableViewProcesos->viewport()->mapToGlobal(pos));
 }
 
+// 🚨 MODIFICACIÓN 3: Termina múltiples procesos con una sola autenticación
 void ProcesosWindow::terminateProcess()
 {
-    // 1. Obtener la fila seleccionada
+    // 1. Obtener todas las filas seleccionadas
     QModelIndexList selectedRows = tableViewProcesos->selectionModel()->selectedRows();
 
     if (selectedRows.isEmpty()) {
@@ -119,36 +130,53 @@ void ProcesosWindow::terminateProcess()
         return;
     }
 
-    QModelIndex index = selectedRows.first();
+    // 2. Recolectar todos los PIDs seleccionados y los nombres de los procesos
+    QStringList pidsToKill;
+    QStringList processNames;
 
-    // 2. Obtener el PID y Nombre
-    QVariant pidVariant = m_processModel->data(m_processModel->index(index.row(), 3), Qt::DisplayRole);
-    int pid = pidVariant.toInt();
-    QString processName = m_processModel->data(m_processModel->index(index.row(), 0), Qt::DisplayRole).toString();
+    for (const QModelIndex &index : selectedRows) {
+        // Obtener el PID (Columna 3) y el nombre (Columna 0)
+        int pid = m_processModel->data(m_processModel->index(index.row(), 3), Qt::DisplayRole).toInt();
+        QString name = m_processModel->data(m_processModel->index(index.row(), 0), Qt::DisplayRole).toString();
 
-    if (pid <= 0) {
-        QMessageBox::critical(this, "Error", "No se pudo obtener el PID.");
+        if (pid > 0) {
+            pidsToKill << QString::number(pid);
+            processNames << name;
+        }
+    }
+
+    if (pidsToKill.isEmpty()) {
+        QMessageBox::critical(this, "Error", "No se pudieron obtener PIDs válidos para terminar.");
         return;
     }
 
-    // 🚨 SOLUCIÓN FINAL: Ejecutar el comando a través del shell (/bin/sh -c).
-    // Esto es el equivalente de la terminal y es más robusto en entornos restringidos.
-    QString commandToExecute = QString("/bin/kill -9 %1").arg(pid);
+    // 3. Construir la lista de argumentos para pkexec
+    // Sintaxis: pkexec kill -9 PID1 PID2 PID3 ...
+    QStringList arguments;
+    arguments << "kill" << "-9";
+    arguments << pidsToKill; // Añade todos los PIDs a la lista de argumentos
 
-    // Usamos QProcess::execute para llamar a /bin/sh y pasarle el comando.
-    int exitCode = QProcess::execute("/bin/sh", QStringList() << "-c" << commandToExecute);
+    // 4. Ejecutar el comando a través de pkexec (solicita la clave una sola vez)
+    QProcess process;
+    process.start("pkexec", arguments);
+    process.waitForFinished();
 
-    // 4. Notificación al usuario basada en el código de salida
+    int exitCode = process.exitCode();
+    QString standardError = process.readAllStandardError();
+    QString processSummary = (pidsToKill.size() == 1) ? processNames.first() :
+                                 QString("%1 procesos (ej: %2...)").arg(pidsToKill.size()).arg(processNames.first());
+
+    // 5. Notificación al usuario
     if (exitCode == 0) {
-        QMessageBox::information(this, "Tarea Finalizada",
-                                 QString("El proceso '%1' (PID %2) ha sido terminado.").arg(processName).arg(pid));
+        QMessageBox::information(this, "Tareas Finalizadas",
+                                 QString("Se intentó terminar %1 proceso(s) (Ej: %2). La operación fue aceptada por el sistema.").arg(pidsToKill.size()).arg(processSummary));
     } else {
-        // Corrección del error 'QString::arg: Argument missing': solo usamos %1 y pasamos un argumento.
-        QString errorMsg = "El comando de terminación falló. Código de salida: %1.";
-        QMessageBox::critical(this, "Error de Terminación",
-                              errorMsg.arg(exitCode));
+        QString errorMsg = QString("El comando de terminación falló para %1 proceso(s).\n"
+                                   "Código de salida: %2.\n"
+                                   "Error del sistema: %3").arg(pidsToKill.size()).arg(exitCode).arg(standardError.trimmed());
+        QMessageBox::critical(this, "Error de Terminación", errorMsg);
     }
 
-    // Forzar una actualización de la tabla
+    // Forzar una actualización de la tabla para ver los resultados
     m_processModel->updateProcessList();
 }

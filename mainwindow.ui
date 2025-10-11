@@ -86,6 +86,30 @@
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="page_6">
+     <widget class="QWidget" name="widget_6" native="true">
+      <property name="geometry">
+       <rect>
+        <x>-20</x>
+        <y>-10</y>
+        <width>1161</width>
+        <height>471</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_7">
+     <widget class="QWidget" name="widget_5" native="true">
+      <property name="geometry">
+       <rect>
+        <x>-20</x>
+        <y>-10</y>
+        <width>1151</width>
+        <height>331</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -111,9 +135,9 @@
    </attribute>
    <addaction name="actionProcesos"/>
    <addaction name="actionRendimiento"/>
-   <addaction name="actionHistorial_de_aplicaciones"/>
+   <addaction name="actionHistorial"/>
    <addaction name="actionInicio"/>
-   <addaction name="actionUsuario"/>
+   <addaction name="actionUsuarios"/>
    <addaction name="actionDetalles"/>
    <addaction name="actionServicios"/>
   </widget>
@@ -133,25 +157,9 @@
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
-  <action name="actionHistorial_de_aplicaciones">
-   <property name="text">
-    <string>Historial de aplicaciones</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::MenuRole::NoRole</enum>
-   </property>
-  </action>
   <action name="actionInicio">
    <property name="text">
     <string>Inicio</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::MenuRole::NoRole</enum>
-   </property>
-  </action>
-  <action name="actionUsuario">
-   <property name="text">
-    <string>Usuario</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
@@ -168,6 +176,22 @@
   <action name="actionServicios">
    <property name="text">
     <string>Servicios</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionUsuarios">
+   <property name="text">
+    <string>Usuarios</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionHistorial">
+   <property name="text">
+    <string>Historial</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
