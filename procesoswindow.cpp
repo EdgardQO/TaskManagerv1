@@ -119,10 +119,9 @@ void ProcesosWindow::terminateProcess()
         return;
     }
 
-    // El modo de selección es SingleSelection, así que solo tomamos la primera fila
     QModelIndex index = selectedRows.first();
 
-    // 2. Obtener el PID del proceso seleccionado (PID es la Columna 3)
+    // 2. Obtener el PID y Nombre
     QVariant pidVariant = m_processModel->data(m_processModel->index(index.row(), 3), Qt::DisplayRole);
     int pid = pidVariant.toInt();
     QString processName = m_processModel->data(m_processModel->index(index.row(), 0), Qt::DisplayRole).toString();
@@ -132,39 +131,24 @@ void ProcesosWindow::terminateProcess()
         return;
     }
 
-    // 🚨 MODIFICACIÓN: Usar el comando 'pkexec' para obtener privilegios SOLAMENTE para 'kill'.
-    // pkexec es el método moderno y más seguro que gksu o el uso directo de 'sudo' en GUI.
+    // 🚨 SOLUCIÓN FINAL: Ejecutar el comando a través del shell (/bin/sh -c).
+    // Esto es el equivalente de la terminal y es más robusto en entornos restringidos.
+    QString commandToExecute = QString("/bin/kill -9 %1").arg(pid);
 
-    QString command;
-    // La forma más robusta es a través de pkexec, que pide la contraseña gráficamente.
-    // pkexec es preferido en muchos entornos Linux modernos.
-    if (QProcess::execute("which pkexec") == 0) {
-        command = QString("pkexec kill -9 %1").arg(pid);
-    } else {
-        // Opción de fallback: usar solo sudo. Esto podría no funcionar si no estás en una terminal.
-        command = QString("sudo kill -9 %1").arg(pid);
-    }
-
-    // Ejecutar el comando. Si usamos pkexec, la ventana de contraseña aparecerá.
-    int exitCode = QProcess::execute(command);
+    // Usamos QProcess::execute para llamar a /bin/sh y pasarle el comando.
+    int exitCode = QProcess::execute("/bin/sh", QStringList() << "-c" << commandToExecute);
 
     // 4. Notificación al usuario basada en el código de salida
     if (exitCode == 0) {
         QMessageBox::information(this, "Tarea Finalizada",
                                  QString("El proceso '%1' (PID %2) ha sido terminado.").arg(processName).arg(pid));
     } else {
-        // El comando kill falló.
-        QString errorMsg;
-        if (exitCode == 256 || exitCode == 1) {
-            errorMsg = "Permiso denegado. Se necesita tu contraseña para terminar procesos críticos.";
-        } else {
-            errorMsg = "Error al ejecutar 'kill'. Código de salida: %2.";
-        }
-
+        // Corrección del error 'QString::arg: Argument missing': solo usamos %1 y pasamos un argumento.
+        QString errorMsg = "El comando de terminación falló. Código de salida: %1.";
         QMessageBox::critical(this, "Error de Terminación",
-                              errorMsg.arg(pid).arg(exitCode));
+                              errorMsg.arg(exitCode));
     }
 
-    // Forzar una actualización de la tabla para que el proceso desaparecido se quite
+    // Forzar una actualización de la tabla
     m_processModel->updateProcessList();
 }
